@@ -7,7 +7,6 @@ def main():
     records = read_valid(lines)
     valid_count = len(records)
     
-    # Пустые строки не считаются ошибками, считаем только непустые
     non_empty_count = sum(1 for line in lines if line.strip())
     error_count = non_empty_count - valid_count
     
@@ -20,3 +19,6 @@ def main():
     print(valid_count)
     print(error_count)
     print(f"{max_temp:.1f}")
+
+if __name__ == "__main__":
+    main()
