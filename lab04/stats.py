@@ -28,3 +28,24 @@ def read_valid(lines: list[str]) -> list[dict]:
         except ValueError:
             pass  
     return valid_records
+
+def average_by_city(records: list[dict]) -> dict:
+    if not records:
+        return {}
+    totals = {}
+    counts = {}
+    for rec in records:
+        city = rec["city"]
+        temp = rec["temperature"]
+        totals[city] = totals.get(city, 0.0) + temp
+        counts[city] = counts.get(city, 0) + 1
+    return {city: round(totals[city] / counts[city], 1) for city in totals}
+
+
+def warmest_city(records: list[dict]) -> str:
+    if not records:
+        return ""
+    averages = average_by_city(records)
+    max_temp = max(averages.values())
+    warmest = [city for city, temp in averages.items() if temp == max_temp]
+    return sorted(warmest)[0]
