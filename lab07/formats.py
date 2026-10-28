@@ -15,3 +15,18 @@ def csv_to_records(text: str) -> list[dict]:
         records.append(record)
 
     return records
+def _parse_value(val_str: str):
+    val_str = val_str.strip()
+    if val_str.lower() in ("true", "yes"):
+        return True
+    if val_str.lower() in ("false", "no"):
+        return False
+    try:
+        return int(val_str)
+    except ValueError:
+        pass
+    try:
+        return float(val_str)
+    except ValueError:
+        pass
+    return val_str
