@@ -30,3 +30,37 @@ def _parse_value(val_str: str):
     except ValueError:
         pass
     return val_str
+
+def parse_settings(lines: list[str]) -> dict:
+    settings = {}
+    current_key = None
+
+    for line in lines:
+        if "#" in line:
+            line = line.split("#", 1)[0]
+
+        if not line.strip():
+            continue
+
+        if line.strip().startswith("-"):
+            if current_key is not None:
+                item_value = line.strip()[1:].strip()
+                # Приводим тип элемента списка
+                parsed_item = _parse_value(item_value)
+                settings[current_key].append(parsed_item)
+            continue
+
+        if ":" in line:
+            key_part, val_part = line.split(":", 1)
+            key = key_part.strip()
+            val_str = val_part.strip()
+
+            if val_str == "":
+                current_key = key
+                settings[current_key] = []
+            else:
+                current_key = None
+                settings[key] = _parse_value(val_str)
+
+    return settings
+
